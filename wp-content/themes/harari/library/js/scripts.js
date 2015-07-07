@@ -119,8 +119,19 @@ jQuery(document).ready(function($) {
       $(this).find('.dropdown-menu').first().stop(true, true).slideUp(110);
     });
   }
-  $('.gform_button').addClass('btn btn-primary btn-lg'); 
-  $('.panel-heading a').each(function() {
+  $(function(){
+    $('.embed-responsive').hover(function(){
+        stopScroll();},
+       function () {
+    $('.embed-responsive iframe').css("pointer-events", "none");
+    });
+  });
+  function stopScroll(){
+    $('.embed-responsive').mousedown(function () {
+        $('.embed-responsive iframe').css("pointer-events", "auto");
+    });
+  }
+    $('.panel-heading a').each(function() {
       $(this).click(function() {     
         if ($(this).parents("div.panel").hasClass('active')){
           $(this).parents("div.panel").removeClass('active');

@@ -8,7 +8,15 @@
 
 						<h1 class="archive-title h2"><?php post_type_archive_title(); ?></h1>
 
-							<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+							<?php
+						      $args = array(
+						            'post_type' => 'practice',
+						            'posts_per_page' => '1',
+						            'order_by' => 'menu_order ',
+						            'order' => 'DESC',
+						            );
+           						 $query = new WP_Query( $args );
+								if (have_posts()) : while ($query->have_posts()) : $query->the_post(); ?>
 
 							<article id="post-<?php the_ID(); ?>" <?php post_class( 'clearfix' ); ?> role="article">
 
@@ -16,13 +24,11 @@
 
 									<h3 class="h2"><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
 									
-									
-
 								</header>
 
 								<section class="entry-content clearfix">
 
-									<?php the_excerpt(); ?>
+									<?php the_content(); ?>
 
 								</section>
 

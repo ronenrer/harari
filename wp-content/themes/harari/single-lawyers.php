@@ -18,34 +18,31 @@ single-bookmarks.php
 			<div id="content">
 
 				<div id="inner-content" class="container clearfix">
-
-						<div id="main" class="eightcol first clearfix" role="main">
+						<header class="article-header">
+							<h1 class="single-title"><?php the_title() ?> | <?php echo get_field('lawyer_position')?></h1>						
+						</header>
+						<div id="main" class="clearfix" role="main">
 
 							<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+							<div class="row">
+								<div class="col-sm-6">
+									<?php the_post_thumbnail('full');?>
+								</div>
+								<div class="col-sm-6">
+									<div class="cv mCustomScrollbar" data-mcs-theme="dark">
+										<?php echo get_field('lawyer_cv')?>
+									</div>
+								</div>
+							</div>
 
 							<article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article">
 
-								<header class="article-header">
-
-									<h1 class="single-title custom-post-type-title"><?php the_title(); ?></h1>
-									<p class="byline vcard"><?php
-										printf( __( 'Posted <time class="updated" datetime="%1$s" pubdate>%2$s</time> by <span class="author">%3$s</span> <span class="amp">&</span> filed under %4$s.', 'bonestheme' ), get_the_time( 'Y-m-j' ), get_the_time( __( 'F jS, Y', 'bonestheme' ) ), bones_get_the_author_posts_link(), get_the_term_list( $post->ID, 'custom_cat', ' ', ', ', '' ) );
-									?></p>
-
-								</header>
 
 								<section class="entry-content clearfix">
 
 									<?php the_content(); ?>
 
 								</section>
-
-								<footer class="article-footer">
-									<p class="tags"><?php echo get_the_term_list( get_the_ID(), 'custom_tag', '<span class="tags-title">' . __( 'Custom Tags:', 'bonestheme' ) . '</span> ', ', ' ) ?></p>
-
-								</footer>
-
-								<?php comments_template(); ?>
 
 							</article>
 
@@ -68,8 +65,6 @@ single-bookmarks.php
 							<?php endif; ?>
 
 						</div>
-
-						<?php get_sidebar(); ?>
 
 				</div>
 

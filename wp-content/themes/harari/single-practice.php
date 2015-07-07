@@ -18,18 +18,24 @@ single-bookmarks.php
 			<div id="content">
 
 				<div id="inner-content" class="container clearfix">
+					 <?php
+				        global $post;
+						$terms = wp_get_post_terms($post->ID, 'practice_cat');
+						foreach ($terms as $termid) {  
+						$current_term_slug = urldecode($termid->name);
+						$term_header_image = get_field('practice_header_img', 'practice_cat_'.$termid->term_id);
+						}?>
+				
+					<header class="article-header">
+						<h1 class="single-title"><?php echo $current_term_slug ; ?></h1>						
+					</header>
+					<div class="practice-pic"><img src="<?php echo $term_header_image ?>"/></div>
 					<div class="row row-offcanvas row-offcanvas-right">
-						<div id="main" class="col-xs-6 col-sm-9 pull-left clearfix" role="main">
+						<div id="main" class="col-xs-6 col-sm-8 pull-left clearfix" role="main">
 							
 							<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
 							<article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article">
-
-								<header class="article-header">
-
-									<h1 class="single-title custom-post-type-title"><?php the_title(); ?></h1>
-
-								</header>
 
 								<section class="entry-content clearfix">
 									<p class="pull-right visible-xs">
@@ -62,18 +68,32 @@ single-bookmarks.php
 
 						</div>
 
-						<div class="col-xs-6 col-sm-3 pull-right sidebar-offcanvas" id="sidebar">
-				          <div class="list-group">
-				            <a href="#" class="list-group-item active">Link</a>
-				            <a href="#" class="list-group-item">Link</a>
-				            <a href="#" class="list-group-item">Link</a>
-				            <a href="#" class="list-group-item">Link</a>
-				            <a href="#" class="list-group-item">Link</a>
-				            <a href="#" class="list-group-item">Link</a>
-				            <a href="#" class="list-group-item">Link</a>
-				            <a href="#" class="list-group-item">Link</a>
-				            <a href="#" class="list-group-item">Link</a>
-				            <a href="#" class="list-group-item">Link</a>
+						<div class="col-xs-6 col-sm-4 pull-right sidebar-offcanvas" id="sidebar">
+				            <?php
+				         		
+									$current_post_id = get_the_ID();
+									$postlist_args = array(
+								   'posts_per_page'  => -1,
+								   'orderby'         => 'menu_order',
+								   'order'           => 'DESC',
+								   'post_type'       => 'practice',
+								   'practice_cat' => $current_term_slug,									  
+									); 
+			
+								$postlist = get_posts( $postlist_args );
+
+										// get ids of posts retrieved from get_posts
+									if (!empty($postlist)) :				
+									?>	
+									<div class="list-group">
+											<?php
+											foreach($postlist as $post): ?>
+											<li <?php echo get_the_ID() == $current_post_id ? 'class="list-group-item current"' : 'class="list-group-item"'; ?>><span></span><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></li>
+											<?php endforeach;?>
+									</div>
+								<?php  endif; 
+								/* /////// END RELATED ARTICLES //////// */
+								?>
 				          </div>
 				        </div><!--/.sidebar-offcanvas-->
 				    </div>
